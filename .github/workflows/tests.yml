@@ -28,18 +28,17 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+      # ❌ BỎ cache để tránh lỗi tải action
+      # - name: Get Composer Cache Directory
+      #   id: composer-cache
+      #   run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2.1.8
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-${{ matrix.php-versions }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.php-versions }}-composer-
+      # - name: Cache Composer dependencies
+      #   uses: actions/cache@v2.1.8
+      #   with:
+      #     path: ${{ steps.composer-cache.outputs.dir }}
+      #     key: ...
+      #     restore-keys: ...
 
       - name: Install dependencies
         run: composer update --prefer-dist --no-progress
